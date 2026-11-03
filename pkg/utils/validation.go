@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"go-fiber-starter/pkg/constant"
+	"go-digital-library-fiber/pkg/constant"
 	"regexp"
 
 	"github.com/go-playground/validator/v10"

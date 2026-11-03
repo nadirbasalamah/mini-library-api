@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"go-fiber-starter/db/models"
+	"go-digital-library-fiber/db/models"
 	"strconv"
 
 	"time"

@@ -1,4 +1,4 @@
-# go-fiber-starter
+# go-digital-library-fiber
 
 Batteries-included Go Fiber Starter Project
 

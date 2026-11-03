@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"go-fiber-starter/api/middlewares"
-	"go-fiber-starter/pkg/constant"
-	"go-fiber-starter/pkg/dtos"
-	"go-fiber-starter/pkg/fileupload"
-	"go-fiber-starter/pkg/utils"
-	usersPkg "go-fiber-starter/users"
+	"go-digital-library-fiber/api/middlewares"
+	"go-digital-library-fiber/pkg/constant"
+	"go-digital-library-fiber/pkg/dtos"
+	"go-digital-library-fiber/pkg/fileupload"
+	"go-digital-library-fiber/pkg/utils"
+	usersPkg "go-digital-library-fiber/users"
 	"net/http"
 	"path/filepath"
 	"strings"

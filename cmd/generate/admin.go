@@ -2,10 +2,10 @@ package main
 
 import (
 	"errors"
-	"go-fiber-starter/db/drivers"
-	"go-fiber-starter/db/models"
-	"go-fiber-starter/pkg/constant"
-	"go-fiber-starter/pkg/utils"
+	"go-digital-library-fiber/db/drivers"
+	"go-digital-library-fiber/db/models"
+	"go-digital-library-fiber/pkg/constant"
+	"go-digital-library-fiber/pkg/utils"
 	"log"
 	"strconv"
 

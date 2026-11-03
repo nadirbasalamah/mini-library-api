@@ -3,9 +3,9 @@ package ai
 import (
 	"encoding/json"
 	"fmt"
-	"go-fiber-starter/pkg/clients"
-	"go-fiber-starter/pkg/constant"
-	"go-fiber-starter/pkg/utils"
+	"go-digital-library-fiber/pkg/clients"
+	"go-digital-library-fiber/pkg/constant"
+	"go-digital-library-fiber/pkg/utils"
 	"net/http"
 )
 

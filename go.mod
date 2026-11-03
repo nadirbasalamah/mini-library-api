@@ -1,4 +1,4 @@
-module go-fiber-starter
+module go-digital-library-fiber
 
 go 1.27.1
 

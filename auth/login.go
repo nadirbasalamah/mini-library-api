@@ -2,7 +2,7 @@ package auth
 
 import (
 	"context"
-	"go-fiber-starter/pkg/utils"
+	"go-digital-library-fiber/pkg/utils"
 
 	"gorm.io/gorm"
 )

@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"errors"
-	"go-fiber-starter/db/models"
+	"go-digital-library-fiber/db/models"
 	"net/http"
 	"time"
 

@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"testing"
 
-	"go-fiber-starter/pkg/utils"
+	"go-digital-library-fiber/pkg/utils"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/require"

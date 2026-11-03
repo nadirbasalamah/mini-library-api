@@ -2,7 +2,7 @@ package users
 
 import (
 	"context"
-	"go-fiber-starter/db/models"
+	"go-digital-library-fiber/db/models"
 
 	"gorm.io/gorm"
 )

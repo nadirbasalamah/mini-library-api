@@ -2,7 +2,7 @@ package drivers
 
 import (
 	"fmt"
-	"go-fiber-starter/db/models"
+	"go-digital-library-fiber/db/models"
 	"log"
 
 	"gorm.io/driver/postgres"
@@ -43,6 +43,8 @@ func (config *DBConfig) InitDB() *gorm.DB {
 func MigrateDB(db *gorm.DB) {
 	err := db.AutoMigrate(
 		&models.User{},
+		&models.Category{},
+		&models.Book{},
 	)
 
 	if err != nil {
