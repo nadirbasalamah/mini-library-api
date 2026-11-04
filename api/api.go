@@ -4,6 +4,7 @@ import (
 	"go-digital-library-fiber/api/handlers"
 	"go-digital-library-fiber/api/middlewares"
 	"go-digital-library-fiber/auth"
+	"go-digital-library-fiber/books"
 	"go-digital-library-fiber/categories"
 	"go-digital-library-fiber/pkg/fileupload"
 	"go-digital-library-fiber/users"
@@ -23,10 +24,12 @@ func NewApp(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewar
 		uploader = fileupload.InitUploader(cld)
 
 		authService     = auth.New(repository)
+		bookService     = books.New(repository)
 		userService     = users.New(repository)
 		categoryService = categories.New(repository)
 
 		authHandler     = handlers.NewAuth(authService, jwtConfig)
+		bookHandler     = handlers.NewBooks(bookService, uploader)
 		usersHandler    = handlers.NewUsers(userService, uploader)
 		categoryHandler = handlers.NewCategories(categoryService)
 	)
@@ -59,6 +62,14 @@ func NewApp(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewar
 	categoryRoutes.Post("/categories", middlewares.VerifyAdmin(), middlewares.ValidateBody(&categories.CategoryRequest{}), categoryHandler.Create)
 	categoryRoutes.Patch("/categories/:id", middlewares.VerifyAdmin(), middlewares.ValidateBody(&categories.CategoryRequest{}), categoryHandler.Update)
 	categoryRoutes.Delete("/categories/:id", middlewares.VerifyAdmin(), categoryHandler.Delete)
+
+	bookRoutes := app.Group("/api/v1", jwtMiddleware, middlewares.VerifyToken())
+	bookRoutes.Get("/books", bookHandler.GetAll)
+	bookRoutes.Get("/books/category/:id", bookHandler.GetByCategory)
+	bookRoutes.Get("/books/:id", bookHandler.GetByID)
+	bookRoutes.Post("/books", middlewares.VerifyAdmin(), middlewares.ValidateBody(&books.BookRequest{}), bookHandler.Create)
+	bookRoutes.Patch("/books/:id", middlewares.VerifyAdmin(), middlewares.ValidateBody(&books.BookRequest{}), bookHandler.Update)
+	bookRoutes.Delete("/books/:id", middlewares.VerifyAdmin(), bookHandler.Delete)
 
 	return app
 }
