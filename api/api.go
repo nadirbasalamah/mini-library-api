@@ -7,6 +7,8 @@ import (
 	"go-digital-library-fiber/books"
 	"go-digital-library-fiber/categories"
 	"go-digital-library-fiber/pkg/fileupload"
+	"go-digital-library-fiber/pkg/rajaongkir"
+	"go-digital-library-fiber/rents"
 	"go-digital-library-fiber/users"
 
 	"github.com/cloudinary/cloudinary-go/v2"
@@ -20,16 +22,19 @@ import (
 
 func NewApp(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewares.JWTConfig) *fiber.App {
 	var (
-		app      = fiber.New()
-		uploader = fileupload.InitUploader(cld)
+		app       = fiber.New()
+		uploader  = fileupload.InitUploader(cld)
+		roService = rajaongkir.InitService()
 
 		authService     = auth.New(repository)
 		bookService     = books.New(repository)
+		rentService     = rents.New(repository)
 		userService     = users.New(repository)
 		categoryService = categories.New(repository)
 
 		authHandler     = handlers.NewAuth(authService, jwtConfig)
 		bookHandler     = handlers.NewBooks(bookService, uploader)
+		rentHandler     = handlers.NewRents(rentService, userService, roService)
 		usersHandler    = handlers.NewUsers(userService, uploader)
 		categoryHandler = handlers.NewCategories(categoryService)
 	)
@@ -70,6 +75,14 @@ func NewApp(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewar
 	bookRoutes.Post("/books", middlewares.VerifyAdmin(), middlewares.ValidateBody(&books.BookRequest{}), bookHandler.Create)
 	bookRoutes.Patch("/books/:id", middlewares.VerifyAdmin(), middlewares.ValidateBody(&books.BookRequest{}), bookHandler.Update)
 	bookRoutes.Delete("/books/:id", middlewares.VerifyAdmin(), bookHandler.Delete)
+
+	rentRoutes := app.Group("/api/v1", jwtMiddleware, middlewares.VerifyToken())
+	rentRoutes.Get("/rents", middlewares.VerifyAdmin(), rentHandler.GetAll)
+	rentRoutes.Get("/rents/me", rentHandler.GetByUser)
+	rentRoutes.Get("/rents/:id", rentHandler.GetByID)
+	rentRoutes.Post("/rents", middlewares.ValidateBody(&rents.RentRequest{}), rentHandler.Create)
+	rentRoutes.Patch("/rents/:id", middlewares.VerifyAdmin(), middlewares.ValidateBody(&rents.UpdateRentRequest{}), rentHandler.Update)
+	rentRoutes.Delete("/rents/:id", middlewares.VerifyAdmin(), rentHandler.Delete)
 
 	return app
 }
