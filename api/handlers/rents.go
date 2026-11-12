@@ -19,7 +19,11 @@ import (
 type Rents struct {
 	rents     rents.Service
 	users     users.Service
-	roService rajaongkir.Service
+	roService deliveryFeeService
+}
+
+type deliveryFeeService interface {
+	GetDeliveryFee(req rajaongkir.GetFeeRequest) (float64, error)
 }
 
 func (r Rents) GetAll(ctx fiber.Ctx) error {
@@ -213,7 +217,7 @@ func (r Rents) Delete(ctx fiber.Ctx) error {
 	})
 }
 
-func NewRents(rentService rents.Service, userService users.Service, roService rajaongkir.Service) Rents {
+func NewRents(rentService rents.Service, userService users.Service, roService deliveryFeeService) Rents {
 	return Rents{
 		rents:     rentService,
 		roService: roService,

@@ -34,7 +34,7 @@ func NewApp(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewar
 
 		authHandler     = handlers.NewAuth(authService, jwtConfig)
 		bookHandler     = handlers.NewBooks(bookService, uploader)
-		rentHandler     = handlers.NewRents(rentService, userService, roService)
+		rentHandler     = handlers.NewRents(rentService, userService, &roService)
 		usersHandler    = handlers.NewUsers(userService, uploader)
 		categoryHandler = handlers.NewCategories(categoryService)
 	)

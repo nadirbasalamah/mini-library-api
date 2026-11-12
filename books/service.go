@@ -31,6 +31,9 @@ func New(repository *gorm.DB) Service {
 	return service{
 		getall: getall{repository: repository},
 		get:    get{repository: repository},
+		getbycategory: getbycategory{
+			repository: repository,
+		},
 		create: create{repository: repository},
 		update: update{repository: repository, get: get{repository: repository}},
 		delete: delete{repository: repository, get: get{repository: repository}},

@@ -56,6 +56,16 @@ Generate the admin account using this command. Ensure the credentials are define
 go run cmd/generate/admin.go
 ```
 
+## Testing
+
+Run the complete Go test suite with:
+
+```sh
+go test ./...
+```
+
+The HTTP handler and route tests use in-process Fiber requests and local test doubles; they do not require a running database or external Cloudinary/RajaOngkir credentials.
+
 Test the endpoints
 
 Register
