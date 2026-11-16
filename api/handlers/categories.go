@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"go-digital-library-fiber/categories"
+	"go-digital-library-fiber/pkg/constant"
 	"go-digital-library-fiber/pkg/dtos"
 	"go-digital-library-fiber/pkg/utils"
 	"net/http"
@@ -52,7 +53,7 @@ func (c Categories) GetByID(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid id",
+			Message: constant.ERR_INVALID_ID,
 		})
 	}
 
@@ -99,7 +100,7 @@ func (c Categories) Update(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid id",
+			Message: constant.ERR_INVALID_ID,
 		})
 	}
 
@@ -129,7 +130,7 @@ func (c Categories) Delete(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid id",
+			Message: constant.ERR_INVALID_ID,
 		})
 	}
 

@@ -54,7 +54,7 @@ func (b Books) GetByID(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid id",
+			Message: constant.ERR_INVALID_ID,
 		})
 	}
 
@@ -78,7 +78,7 @@ func (b Books) GetByCategory(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid id",
+			Message: constant.ERR_INVALID_ID,
 		})
 	}
 
@@ -165,7 +165,7 @@ func (b Books) Update(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid id",
+			Message: constant.ERR_INVALID_ID,
 		})
 	}
 
@@ -233,7 +233,7 @@ func (b Books) Delete(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid id",
+			Message: constant.ERR_INVALID_ID,
 		})
 	}
 

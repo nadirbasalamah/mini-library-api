@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"go-digital-library-fiber/api/handlers"
 	"go-digital-library-fiber/api/middlewares"
 	"go-digital-library-fiber/auth"
@@ -51,38 +52,46 @@ func NewApp(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewar
 	app.Use(logMiddleware.Init())
 	app.Use(helmet.New())
 
-	authRoutes := app.Group("/api/v1/auth")
+	const endpointRoute = "/api/v1"
+
+	authRoutes := app.Group(fmt.Sprintf("%s/auth", endpointRoute))
 
 	authRoutes.Post("/register", middlewares.ValidateBody(&auth.RegisterRequest{}), authHandler.Register)
 	authRoutes.Post("/login", middlewares.ValidateBody(&auth.LoginRequest{}), authHandler.Login)
 
-	userRoutes := app.Group("/api/v1", jwtMiddleware, middlewares.VerifyToken())
+	userRoutes := app.Group(endpointRoute, jwtMiddleware, middlewares.VerifyToken())
 
 	userRoutes.Get("/profile", usersHandler.GetProfile)
 	userRoutes.Patch("/profile/edit", middlewares.ValidateBody(&users.EditProfileRequest{}), usersHandler.EditProfile)
 
-	categoryRoutes := app.Group("/api/v1", jwtMiddleware, middlewares.VerifyToken())
-	categoryRoutes.Get("/categories", categoryHandler.GetAll)
-	categoryRoutes.Get("/categories/:id", categoryHandler.GetByID)
-	categoryRoutes.Post("/categories", middlewares.VerifyAdmin(), middlewares.ValidateBody(&categories.CategoryRequest{}), categoryHandler.Create)
-	categoryRoutes.Patch("/categories/:id", middlewares.VerifyAdmin(), middlewares.ValidateBody(&categories.CategoryRequest{}), categoryHandler.Update)
-	categoryRoutes.Delete("/categories/:id", middlewares.VerifyAdmin(), categoryHandler.Delete)
+	const (
+		CATEGORY_ROUTE_BY_ID = "/categories/:id"
+		BOOK_ROUTE_BY_ID     = "/books/:id"
+		RENT_ROUTE_BY_ID     = "/rents/:id"
+	)
 
-	bookRoutes := app.Group("/api/v1", jwtMiddleware, middlewares.VerifyToken())
+	categoryRoutes := app.Group(endpointRoute, jwtMiddleware, middlewares.VerifyToken())
+	categoryRoutes.Get("/categories", categoryHandler.GetAll)
+	categoryRoutes.Get(CATEGORY_ROUTE_BY_ID, categoryHandler.GetByID)
+	categoryRoutes.Post("/categories", middlewares.VerifyAdmin(), middlewares.ValidateBody(&categories.CategoryRequest{}), categoryHandler.Create)
+	categoryRoutes.Patch(CATEGORY_ROUTE_BY_ID, middlewares.VerifyAdmin(), middlewares.ValidateBody(&categories.CategoryRequest{}), categoryHandler.Update)
+	categoryRoutes.Delete(CATEGORY_ROUTE_BY_ID, middlewares.VerifyAdmin(), categoryHandler.Delete)
+
+	bookRoutes := app.Group(endpointRoute, jwtMiddleware, middlewares.VerifyToken())
 	bookRoutes.Get("/books", bookHandler.GetAll)
 	bookRoutes.Get("/books/category/:id", bookHandler.GetByCategory)
-	bookRoutes.Get("/books/:id", bookHandler.GetByID)
+	bookRoutes.Get(BOOK_ROUTE_BY_ID, bookHandler.GetByID)
 	bookRoutes.Post("/books", middlewares.VerifyAdmin(), middlewares.ValidateBody(&books.BookRequest{}), bookHandler.Create)
-	bookRoutes.Patch("/books/:id", middlewares.VerifyAdmin(), middlewares.ValidateBody(&books.BookRequest{}), bookHandler.Update)
-	bookRoutes.Delete("/books/:id", middlewares.VerifyAdmin(), bookHandler.Delete)
+	bookRoutes.Patch(BOOK_ROUTE_BY_ID, middlewares.VerifyAdmin(), middlewares.ValidateBody(&books.BookRequest{}), bookHandler.Update)
+	bookRoutes.Delete(BOOK_ROUTE_BY_ID, middlewares.VerifyAdmin(), bookHandler.Delete)
 
-	rentRoutes := app.Group("/api/v1", jwtMiddleware, middlewares.VerifyToken())
+	rentRoutes := app.Group(endpointRoute, jwtMiddleware, middlewares.VerifyToken())
 	rentRoutes.Get("/rents", middlewares.VerifyAdmin(), rentHandler.GetAll)
 	rentRoutes.Get("/rents/me", rentHandler.GetByUser)
-	rentRoutes.Get("/rents/:id", rentHandler.GetByID)
+	rentRoutes.Get(RENT_ROUTE_BY_ID, rentHandler.GetByID)
 	rentRoutes.Post("/rents", middlewares.ValidateBody(&rents.RentRequest{}), rentHandler.Create)
-	rentRoutes.Patch("/rents/:id", middlewares.VerifyAdmin(), middlewares.ValidateBody(&rents.UpdateRentRequest{}), rentHandler.Update)
-	rentRoutes.Delete("/rents/:id", middlewares.VerifyAdmin(), rentHandler.Delete)
+	rentRoutes.Patch(RENT_ROUTE_BY_ID, middlewares.VerifyAdmin(), middlewares.ValidateBody(&rents.UpdateRentRequest{}), rentHandler.Update)
+	rentRoutes.Delete(RENT_ROUTE_BY_ID, middlewares.VerifyAdmin(), rentHandler.Delete)
 
 	return app
 }

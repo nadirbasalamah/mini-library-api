@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-digital-library-fiber/api/middlewares"
 	"go-digital-library-fiber/db/models"
+	"go-digital-library-fiber/pkg/constant"
 	"go-digital-library-fiber/pkg/dtos"
 	"go-digital-library-fiber/pkg/rajaongkir"
 	"go-digital-library-fiber/pkg/utils"
@@ -60,7 +61,7 @@ func (r Rents) GetByUser(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusUnauthorized).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid token",
+			Message: constant.ERR_INVALID_TOKEN,
 		})
 	}
 
@@ -84,7 +85,7 @@ func (r Rents) GetByID(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid id",
+			Message: constant.ERR_INVALID_ID,
 		})
 	}
 
@@ -100,7 +101,7 @@ func (r Rents) GetByID(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusUnauthorized).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid token",
+			Message: constant.ERR_INVALID_TOKEN,
 		})
 	}
 	if user.Role != models.Admin && rent.UserID != uint(user.ID) {
@@ -124,7 +125,7 @@ func (r Rents) Create(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusUnauthorized).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid token",
+			Message: constant.ERR_INVALID_TOKEN,
 		})
 	}
 
@@ -175,7 +176,7 @@ func (r Rents) Update(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid id",
+			Message: constant.ERR_INVALID_ID,
 		})
 	}
 
@@ -200,7 +201,7 @@ func (r Rents) Delete(ctx fiber.Ctx) error {
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).JSON(dtos.Response[any]{
 			Status:  "failed",
-			Message: "invalid id",
+			Message: constant.ERR_INVALID_ID,
 		})
 	}
 

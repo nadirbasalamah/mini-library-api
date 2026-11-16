@@ -45,3 +45,8 @@ var ALLOWED_EXTENSIONS map[string]bool = map[string]bool{
 const (
 	RESOURCE_IMAGE = "image"
 )
+
+const (
+	ERR_INVALID_TOKEN = "invalid token"
+	ERR_INVALID_ID    = "invalid id"
+)

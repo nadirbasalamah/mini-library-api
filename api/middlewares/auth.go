@@ -3,6 +3,7 @@ package middlewares
 import (
 	"errors"
 	"go-digital-library-fiber/db/models"
+	"go-digital-library-fiber/pkg/constant"
 	"net/http"
 	"time"
 
@@ -68,7 +69,7 @@ func (jwtCfg *JWTConfig) GenerateToken(userID int, role models.Role) (string, er
 func GetUser(c fiber.Ctx) (*JWTCustomClaims, error) {
 	token := jwtware.FromContext(c)
 	if token == nil {
-		return nil, errors.New("invalid token")
+		return nil, errors.New(constant.ERR_INVALID_TOKEN)
 	}
 
 	claims, ok := token.Claims.(*JWTCustomClaims)
@@ -83,7 +84,7 @@ func GetUserID(c fiber.Ctx) (int, error) {
 	claim, err := GetUser(c)
 
 	if err != nil {
-		return 0, errors.New("invalid token")
+		return 0, errors.New(constant.ERR_INVALID_TOKEN)
 	}
 
 	return claim.ID, nil
@@ -94,7 +95,7 @@ func VerifyToken() fiber.Handler {
 		userData, err := GetUser(c)
 		if userData == nil || err != nil {
 			return c.Status(http.StatusUnauthorized).JSON(fiber.Map{
-				"message": "invalid token",
+				"message": constant.ERR_INVALID_TOKEN,
 			})
 		}
 
@@ -110,7 +111,7 @@ func VerifyAdmin() fiber.Handler {
 
 		if err != nil {
 			return c.Status(http.StatusUnauthorized).JSON(fiber.Map{
-				"message": "invalid token",
+				"message": constant.ERR_INVALID_TOKEN,
 			})
 		}
 
