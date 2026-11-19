@@ -14,7 +14,7 @@ WORKDIR /
 
 COPY --from=build-stage /goapp /goapp
 
-EXPOSE 1323
+EXPOSE 8080
 
 USER nonroot:nonroot
 

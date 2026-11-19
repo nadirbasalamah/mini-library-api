@@ -1,6 +1,6 @@
 services:
   api-service:
-    # image: TODO: insert image name
+    image: minlib-api:1.0.0
     container_name: api-service
     environment:
       - APP_MODE=${APP_MODE}
@@ -17,5 +17,5 @@ services:
       - AI_API_KEY=${AI_API_KEY}
       - AI_MODEL=${AI_MODEL}
     ports:
-      - ${PORT}:1323
+      - ${PORT}:${PORT}
     restart: on-failure
